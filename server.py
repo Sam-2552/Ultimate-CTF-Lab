@@ -1156,13 +1156,29 @@ def handle_url():
 def console():
     output = ''
     if request.method == 'POST':
-        command = request.form['command']
-        try:
-            # Note: In a real-world application, never use shell=True with user input due to security risks
-            result = subprocess.run(command, shell=True, capture_output=True, text=True)
-            output = result.stdout if result.returncode == 0 else result.stderr
-        except Exception as e:
-            output = str(e)
+        command = request.form['command'].strip()
+        
+        # Whitelist of allowed commands
+        allowed_commands = ['ls', 'pwd', 'dir', 'clear', 'cls', 'help', 'exit', 'quit', 'more server.py', 'type']
+        
+        # Common dangerous commands to give false errors for
+        dangerous_commands = ['rm', 'cat', 'sudo', 'su', 'chmod', 'chown', 'wget', 'curl', 'nc', 'netcat', 'bash', 'sh']
+        
+        # Check if command is in dangerous list
+        for dangerous in dangerous_commands:
+            if command.startswith(dangerous):
+                output = f"Error: Command '{dangerous}' blocked by Cloudflare WAF"
+                return render_template('console.html', output=output)
+        
+        # Check if command is in whitelist
+        if command in allowed_commands:
+            try:
+                result = subprocess.run(command, shell=True, capture_output=True, text=True)
+                output = result.stdout if result.returncode == 0 else result.stderr
+            except Exception as e:
+                output = str(e)
+        else:
+            output = f"Error: Command '{command}' malicious activity detected"
 
     return render_template('console.html', output=output)
 
