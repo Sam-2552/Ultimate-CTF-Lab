@@ -18,7 +18,7 @@ from flask_cors import CORS
 
 app = Flask(__name__)
 # app.secret_key = "secret_key"
-secret_key="helllo_kjghkjh"
+secret_key="hello"
 app.config['SECRET_KEY'] = secret_key
 print(secret_key)
 
