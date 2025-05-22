@@ -10,6 +10,7 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
     />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.2/socket.io.js"></script>
     <script type="text/javascript">
       var socket = io.connect("https://" + document.domain + ":" + location.port, {
@@ -41,85 +42,69 @@
 
       socket.on("update_para", function (data) {
         console.log("Received data:", data);
-        // Handle received data here
         var lyrics = document.getElementById("lyrics");
 
         if (data == "font+") {
-          // Get the device width
           var deviceWidth = window.innerWidth;
-
-          // Example of performing different actions based on device width
+          var currentSize = parseFloat(window.getComputedStyle(lyrics).fontSize);
+          
           if (deviceWidth < 600) {
-            var currentSize = window
-              .getComputedStyle(lyrics, null)
-              .getPropertyValue("font-size");
-            var newSize = parseFloat(currentSize) + 0.5; // Increase font size by 2px (adjust as needed)
-            lyrics.style.fontSize = newSize + "px";
+            lyrics.style.fontSize = (currentSize + 4) + "px";
           } else if (deviceWidth >= 600 && deviceWidth < 900) {
-            var currentSize = window
-              .getComputedStyle(lyrics, null)
-              .getPropertyValue("font-size");
-            var newSize = parseFloat(currentSize) + 1; // Increase font size by 2px (adjust as needed)
-            lyrics.style.fontSize = newSize + "px";
+            lyrics.style.fontSize = (currentSize + 8) + "px";
           } else {
-            var currentSize = window
-              .getComputedStyle(lyrics, null)
-              .getPropertyValue("font-size");
-            var newSize = parseFloat(currentSize) + 2; // Increase font size by 2px (adjust as needed)
-            lyrics.style.fontSize = newSize + "px";
+            lyrics.style.fontSize = (currentSize + 12) + "px";
           }
-
-          var currentSize = window
-            .getComputedStyle(lyrics, null)
-            .getPropertyValue("font-size");
-          var newSize = parseFloat(currentSize) + 2; // Increase font size by 2px (adjust as needed)
-          lyrics.style.fontSize = newSize + "px";
         } else if (data == "font-") {
-          // Get the device width
           var deviceWidth = window.innerWidth;
-
-          // Example of performing different actions based on device width
+          var currentSize = parseFloat(window.getComputedStyle(lyrics).fontSize);
+          
           if (deviceWidth < 600) {
-            var currentSize = window
-              .getComputedStyle(lyrics, null)
-              .getPropertyValue("font-size");
-            var newSize = parseFloat(currentSize) - 0.5; // Increase font size by 2px (adjust as needed)
-            lyrics.style.fontSize = newSize + "px";
-          } else if (deviceWidth >= 600 && deviceWidth < 1024) {
-            var currentSize = window
-              .getComputedStyle(lyrics, null)
-              .getPropertyValue("font-size");
-            var newSize = parseFloat(currentSize) - 1; // Increase font size by 2px (adjust as needed)
-            lyrics.style.fontSize = newSize + "px";
+            lyrics.style.fontSize = (currentSize - 4) + "px";
+          } else if (deviceWidth >= 600 && deviceWidth < 900) {
+            lyrics.style.fontSize = (currentSize - 8) + "px";
           } else {
-            var currentSize = window
-              .getComputedStyle(lyrics, null)
-              .getPropertyValue("font-size");
-            var newSize = parseFloat(currentSize) - 2; // Increase font size by 2px (adjust as needed)
-            lyrics.style.fontSize = newSize + "px";
+            lyrics.style.fontSize = (currentSize - 12) + "px";
           }
         } else if (data == "black_bg") {
           lyrics.innerHTML = "";
           container = document.getElementById("container");
-            document.body.style.backgroundColor = "black";
-            container.style.backgroundColor = "black";
-          
-        }else if (data == "white_bg") {
+          document.body.style.backgroundColor = "black";
+          container.style.backgroundColor = "black";
+        } else if (data == "white_bg") {
           lyrics.innerHTML = "";
           container = document.getElementById("container");
-            document.body.style.backgroundColor = "white";
-            container.style.backgroundColor = "white";
-          
+          document.body.style.backgroundColor = "white";
+          container.style.backgroundColor = "white";
         } else {
-          // Replace newline characters (\n) with <br> tags for displaying line breaks in HTML
           var formattedData = data.replace(/\n/g, "<br>");
-
-          // Set the HTML content with line breaks to the lyrics element
           lyrics.innerHTML = formattedData;
         }
       });
     </script>
     <style>
+      :root {
+        --primary-color: #2D3436;
+        --secondary-color: #636E72;
+        --accent-color: #00B894;
+        --background-color: #FFFFFF;
+        --text-color: #2D3436;
+        --transition-speed: 0.3s;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html, body {
+        font-family: 'Inter', sans-serif;
+        background-color: var(--background-color);
+        color: var(--text-color);
+        transition: background-color var(--transition-speed);
+      }
+
       .overlay {
         display: none;
         position: fixed;
@@ -127,87 +112,134 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
+        background-color: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(5px);
         justify-content: center;
         align-items: center;
+        z-index: 1000;
       }
 
       .popup-card {
-        background-color: white;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        background-color: var(--background-color);
+        padding: 2rem;
+        border-radius: 1rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         text-align: center;
+        max-width: 90%;
+        width: 400px;
+        transform: translateY(0);
+        transition: transform var(--transition-speed);
+      }
+
+      .popup-card:hover {
+        transform: translateY(-5px);
+      }
+
+      .popup-card h2 {
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+        font-weight: 600;
+      }
+
+      .popup-card p {
+        color: var(--secondary-color);
+        margin-bottom: 1.5rem;
       }
 
       button {
-        padding: 10px 20px;
-        background-color: #007bff;
+        padding: 0.8rem 1.5rem;
+        background-color: var(--accent-color);
         color: white;
         border: none;
-        border-radius: 5px;
+        border-radius: 0.5rem;
         cursor: pointer;
-        margin-top: 15px;
+        font-weight: 500;
+        transition: all var(--transition-speed);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       }
 
-      html,
-      body {
-        margin: 0;
-        padding: 0;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-      }
-
-      body {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-      }
-
-      #logo {
-        position: absolute;
-        top: 20px;
-        right: 20px;
-      }
-
-      #chord {
-        position: absolute;
-        top: 20px;
-        left: 20px;
-        color: rgb(255, 166, 0);
-      }
-
-      #lyrics {
-        text-align: center;
-        font-weight: bold;
+      button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
       }
 
       .container {
         display: flex;
         align-items: center;
-        /* Vertically center items */
         justify-content: center;
-        /* Horizontally center items */
-        height: 100vh;
-        /* Set the container height to the full viewport height */
+        min-height: 100vh;
+        padding: 2rem;
+        position: relative;
+        transition: background-color var(--transition-speed);
       }
 
+      #logo {
+        position: absolute;
+        top: 2rem;
+        right: 2rem;
+        width: 80px;
+        height: 80px;
+        opacity: 0.8;
+        transition: opacity var(--transition-speed);
+      }
+
+      #logo:hover {
+        opacity: 1;
+      }
+
+      #chord {
+        position: absolute;
+        top: 2rem;
+        left: 2rem;
+        color: var(--accent-color);
+        font-weight: 500;
+      }
+
+      #lyrics {
+        text-align: center;
+        font-weight: 500;
+        line-height: 1.6;
+        max-width: 90%;
+        margin: 0 auto;
+        transition: all var(--transition-speed);
+      }
+
+      /* Dark mode styles */
+      body.dark-mode {
+        --background-color: #1A1A1A;
+        --text-color: #FFFFFF;
+      }
+
+      /* Responsive styles */
       @media only screen and (max-width: 600px) {
-        /* Your CSS styles for devices with a width up to 600px */
         #lyrics {
-          font-size: 200%;
+          font-size: 24px; /* Base font size for mobile */
+        }
+
+        .popup-card {
+          padding: 1.5rem;
+        }
+
+        #logo {
+          width: 60px;
+          height: 60px;
         }
       }
 
-      /* Apply styles for screens with a minimum width of 601px */
       @media only screen and (min-width: 601px) {
         #lyrics {
-          font-size: 500%;
+          font-size: 32px; /* Base font size for desktop */
         }
+      }
 
-        /* Your CSS styles for devices with a width of 601px or larger */
+      /* Animation for lyrics updates */
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      #lyrics {
+        animation: fadeIn 0.3s ease-out;
       }
     </style>
   </head>
@@ -215,11 +247,12 @@
   <body>
     <div class="overlay" id="overlay">
       <div class="popup-card" id="popupCard">
-        <h2>Full Screen Access!</h2>
-        <p>Click the full screen button for enhanced view!</p>
-        <button onclick="full()">Full Screen</button>
+        <h2>Full Screen Experience</h2>
+        <p>Click below to enter full screen mode for the best viewing experience</p>
+        <button onclick="full()">Enter Full Screen</button>
       </div>
     </div>
+
     <div class="container" id="container">
       <img
         id="logo"
@@ -228,10 +261,8 @@
         width="100"
         height="100"
       />
-      <br />
       <div class="song-lyrics" id="lyrics"></div>
     </div>
-    <br />
 
     <script>
       function adjustTextSize() {
@@ -277,7 +308,7 @@
 
         setTimeout(function () {
           closePopup();
-        }, 5000); // Close popup after 3 seconds
+        }, 5000); // Close popup after 5 seconds
       });
 
       function closePopup() {
@@ -285,6 +316,7 @@
         overlay.style.display = "none";
       }
     </script>
+
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
   </body>
