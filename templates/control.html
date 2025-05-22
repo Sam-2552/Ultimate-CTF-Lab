@@ -3,168 +3,190 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Control Panel</title>
 
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
     />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     {% if login %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.2/socket.io.js"></script>
     <script type="text/javascript">
-      var socket = io.connect(
-        "https://" + document.domain + ":" + location.port
-      );
+      var socket = io.connect("https://" + document.domain + ":" + location.port, {
+        transports: ['websocket', 'polling'],
+        secure: true,
+        rejectUnauthorized: false,
+        path: '/socket.io/',
+        reconnection: true,
+        reconnectionAttempts: 5,
+        reconnectionDelay: 1000
+      });
 
       socket.on("connect", function () {
-        var user = "{{user}}"; // Replace with the user name or identifier
-        socket.emit("join", user); // Join the room upon connection
+        var user = "{{user}}";
+        socket.emit("join", user);
         console.log("Connected and joined room:", user);
+      });
+
+      socket.on("connect_error", function(error) {
+        console.error("Connection Error:", error);
+      });
+
+      socket.on("disconnect", function(reason) {
+        console.log("Disconnected:", reason);
       });
 
       socket.on("update_data", function (data) {
         console.log("Received data:", data);
-        // Handle received data here
         var lyrics = document.getElementById("lyrics");
         lyrics.innerHTML = data;
       });
     </script>
     {% endif %}
     <style>
-      .overlay {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        justify-content: center;
-        align-items: center;
+      :root {
+        --primary-color: #2D3436;
+        --secondary-color: #636E72;
+        --accent-color: #00B894;
+        --background-color: #F8F9FA;
+        --text-color: #2D3436;
+        --hover-color: #E9ECEF;
+        --selected-color: #00B894;
+        --transition-speed: 0.3s;
       }
 
-      .popup-card {
-        background-color: white;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-        text-align: center;
-      }
-
-      button {
-        padding: 10px 20px;
-        background-color: #007bff;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        margin-top: 15px;
-      }
-
-      /* Reset default margin and padding */
-      body,
-      h1,
-      h2,
-      p {
+      * {
         margin: 0;
         padding: 0;
+        box-sizing: border-box;
       }
 
-      /* Set body font and background color */
       body {
-        font-family: Arial, sans-serif;
-        background-color: #f4f4f4;
-      }
-
-      /* Styling for song lyrics paragraphs */
-      .song-lyrics {
-        color: #333;
+        font-family: 'Inter', sans-serif;
+        background-color: var(--background-color);
+        color: var(--text-color);
         line-height: 1.6;
-        font-size: 20px;
       }
 
       .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
         overflow-y: auto;
-        /* Add this line to enable vertical scrolling */
       }
 
-      p {
+      .song-lyrics {
+        background-color: white;
+        border-radius: 1rem;
+        padding: 2rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      }
+
+      .song-lyrics p {
         cursor: pointer;
-        /* Change cursor on hover */
-        padding: 5px 10px;
-        /* Increase clickable area */
+        padding: 0.8rem 1rem;
+        margin: 0.5rem 0;
+        border-radius: 0.5rem;
+        transition: all var(--transition-speed);
       }
 
-      /*
-        p:hover {
-            background-color: #f0f0f0;
-            /* Optional: Highlight on hover
-        } */
-
-      .clicked {
-        background-color: lightblue;
-        /* Change to the desired background color */
+      .song-lyrics p:hover {
+        background-color: var(--hover-color);
       }
 
-      .normal {
+      .song-lyrics p.clicked {
+        background-color: var(--selected-color);
+        color: white;
+      }
+
+      .song-lyrics p.normal {
         background-color: transparent;
-        /* Set the default background color here */
-      }
-
-      /* Media query for responsiveness */
-      @media (min-width: 768px) {
-        .song-card {
-          width: calc(50% - 40px);
-        }
       }
 
       .mini-player {
         position: fixed;
-        bottom: 20px;
-        right: 20px;
-        width: 300px; /* You can adjust the size */
-        height: 200px; /* You can adjust the size */
-        background-color: #f0f0f0;
-        border: 1px solid #ccc;
-        transition: all 0.3s ease;
+        bottom: 2rem;
+        right: 2rem;
+        width: 320px;
+        height: 180px;
+        background-color: white;
+        border-radius: 1rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        transition: all var(--transition-speed);
         z-index: 1000;
-        cursor: pointer;
+        overflow: hidden;
       }
 
-      /* Styles for the floating button */
-      .floating-button {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        background-color: #007bff;
-        color: #fff;
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        text-align: center;
-        line-height: 50px;
-        cursor: pointer;
-        z-index: 1001; /* Ensure the button appears above the mini player */
-      }
-
-      /* Style for the iframe */
       .mini-player iframe {
         width: 100%;
         height: 100%;
-        /* border: none; Remove default iframe border */
+        border: none;
+      }
+
+      .floating-button {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        width: 3rem;
+        height: 3rem;
+        background-color: var(--accent-color);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        cursor: pointer;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: all var(--transition-speed);
+        z-index: 1001;
+      }
+
+      .floating-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+      }
+
+      .floating-button.active {
+        transform: rotate(45deg);
+      }
+
+      @media (max-width: 768px) {
+        .container {
+          padding: 1rem;
+        }
+
+        .song-lyrics {
+          padding: 1rem;
+        }
+
+        .mini-player {
+          width: 280px;
+          height: 157.5px;
+          bottom: 1rem;
+          right: 1rem;
+        }
+
+        .floating-button {
+          bottom: 1rem;
+          right: 1rem;
+        }
+      }
+
+      /* Animation for lyrics updates */
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      .song-lyrics p {
+        animation: fadeIn 0.3s ease-out;
       }
     </style>
   </head>
 
   <body>
-    <!-- <div class="overlay" id="overlay">
-      <div class="popup-card" id="popupCard">
-        <h2>Full Screen Access!</h2>
-        <h5>Click the full screen button for enhanced view!</h5>
-        <button onclick="full()">Full Screen</button>
-      </div>
-    </div> -->
-
     <div class="floating-button" id="toggleButton">C</div>
 
     <div class="mini-player" id="miniPlayer">
@@ -176,176 +198,87 @@
     </div>
     
     <script>
-      // Function to construct the iframe src dynamically
       function setIframeSrc(user) {
-        const currentUrl = window.location.href; // Get the current URL
-        const domain = new URL(currentUrl).origin; // Extract the domain
-        const endpoint = `/display/${user}_display`; // Define the endpoint
-        const iframeSrc = domain + endpoint; // Construct the full URL
-        document.getElementById('dynamicIframe').src = iframeSrc; // Set the iframe src
+        const currentUrl = window.location.href;
+        const domain = new URL(currentUrl).origin;
+        const endpoint = `/display/${user}_display`;
+        const iframeSrc = domain + endpoint;
+        document.getElementById('dynamicIframe').src = iframeSrc;
       }
     
-      // Get the user value from the Flask context
-      const userValue = "{{ user }}"; // Flask variable
+      const userValue = "{{ user }}";
       setIframeSrc(userValue);
+
+      // Toggle mini player visibility
+      document.getElementById('toggleButton').addEventListener('click', function() {
+        const miniPlayer = document.getElementById('miniPlayer');
+        const button = this;
+        
+        if (miniPlayer.style.display === 'none') {
+          miniPlayer.style.display = 'block';
+          button.classList.remove('active');
+        } else {
+          miniPlayer.style.display = 'none';
+          button.classList.add('active');
+        }
+      });
     </script>
-    
 
     <div class="container" id="container">
-      <br />
-      <div class="song-lyrics" id="lyrics" style="text-align: center">
+      <div class="song-lyrics" id="lyrics">
         {{ data | safe }}
       </div>
     </div>
-    <br />
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-      var miniPlayer = document.getElementById("miniPlayer");
-      var toggleButton = document.getElementById("toggleButton");
-
-      miniPlayer.addEventListener("click", function (event) {
-        // Check if the event target is the mini player itself
-        if (event.target === miniPlayer) {
-          toggleMiniPlayer();
-        }
-      });
-
-      toggleButton.addEventListener("click", function () {
-        toggleMiniPlayer();
-      });
-
-      function toggleMiniPlayer() {
-        if (miniPlayer.style.right === "20px") {
-          miniPlayer.style.right = null;
-          miniPlayer.style.top = "20px";
-          miniPlayer.style.bottom = null;
-        } else {
-          miniPlayer.style.right = "20px";
-          miniPlayer.style.top = null;
-          miniPlayer.style.bottom = "20px";
-        }
-      }
-
-      function resizeIframeContent(iframe) {
-        // Adjust font size of the content inside the iframe
-        var css = "body { font-size: 5px !important; }"; // Change font size as needed
-
-        // Adjust size of the logo (example: reduce its width to 50%)
-        css += "#logo { width: 10% !important; height: 15% !important; }"; // Adjust width as needed
-
-        var style = iframe.contentDocument.createElement("style");
-        style.type = "text/css";
-        if (style.styleSheet) {
-          style.styleSheet.cssText = css;
-        } else {
-          style.appendChild(document.createTextNode(css));
-        }
-        iframe.contentDocument.head.appendChild(style);
-      }
-    </script>
-
-    <script>
-      function full() {
-        var elem = document.getElementById("container");
-
-        if (elem.requestFullscreen) {
-          elem.requestFullscreen();
-        } else if (elem.msRequestFullscreen) {
-          elem.msRequestFullscreen();
-        } else if (elem.mozRequestFullscreen) {
-          elem.mozRequestFullscreen();
-        } else if (elem.webkitRequestFullscreen) {
-          elem.webkitRequestFullscreen();
-        }
-
-        elem.style.backgroundColor = "white";
-      }
-    </script>
-
-    <script>
+      // Function to send lyrics to display
       function sendData(lyrics) {
-        var dataToSend = lyrics; // Replace with your data source
-        var user = "{{user}}_display"; // Replace with the user name or identifier
-
+        var dataToSend = lyrics;
+        var user = "{{user}}_display";
         socket.emit("send_para", { data: dataToSend, user: user });
       }
-
-      socket.on("connect", function () {
-        var user = "{{user}}_display"; // Replace with the user name or identifier
-        socket.emit("join", user); // Join the room upon connection
-        console.log("Connected and joined display room:", user);
-      });
 
       // Function to convert <br> tags to newline characters
       function convertBRtoNewline(text) {
         return text.replace(/<br\s*\/?>/gi, "\n");
       }
 
-      let previousClickedElement = null; // To store the previously clicked paragraph
+      let previousClickedElement = null;
 
-      // Function to be executed when a <p> tag is clicked
+      // Function to handle paragraph clicks
       function handleClick(event) {
-        // Get the clicked element
         const clickedElement = event.target;
 
-        // Check if the clicked element is a <p> tag
         if (clickedElement.tagName === "P") {
-          // Get the text content of the clicked <p> tag
           const clickedText = clickedElement.innerHTML;
 
-          // Remove the 'clicked' class from the previously clicked paragraph, if any
+          // Update clicked state
           if (previousClickedElement) {
             previousClickedElement.classList.remove("clicked");
             previousClickedElement.classList.add("normal");
           }
-          // Toggle the 'clicked' class for the current clicked paragraph
           clickedElement.classList.toggle("clicked");
           clickedElement.classList.toggle("normal");
 
-          // Update the previously clicked element
           previousClickedElement = clickedElement;
 
-          // Convert <br> tags to newlines for the clicked paragraph
+          // Convert and send the lyrics
           const textWithNewlines = convertBRtoNewline(clickedText);
-
-          // Now textWithNewlines contains the text content with newline characters
-          console.log(textWithNewlines);
-
+          console.log("Sending lyrics:", textWithNewlines);
           sendData(textWithNewlines);
-          // Perform other actions with the modified text content as needed
         }
       }
 
-      // Event delegation: Listen for click events on the document
-      document.addEventListener("click", function (event) {
-        // Check if the clicked element or any of its ancestors is a <p> tag
+      // Event delegation for click handling
+      document.addEventListener("click", function(event) {
         const isParagraph = event.target.closest("p");
-
-        // If a <p> tag or its descendant is clicked, handle the click
         if (isParagraph) {
           handleClick(event);
         }
       });
     </script>
-
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        setTimeout(function () {
-          var overlay = document.getElementById("overlay");
-          overlay.style.display = "flex";
-        }, 1000); // Show popup after 1 second
-
-        setTimeout(function () {
-          closePopup();
-        }, 5000); // Close popup after 3 seconds
-      });
-
-      function closePopup() {
-        var overlay = document.getElementById("overlay");
-        overlay.style.display = "none";
-      }
-    </script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>
