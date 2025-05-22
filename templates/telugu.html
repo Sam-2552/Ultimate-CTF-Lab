@@ -133,6 +133,156 @@
             border-radius: 4px;
             padding: 2px 6px;
         }
+
+        /* Add new card and modal styles */
+        .song-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            padding: 1.5rem;
+        }
+
+        .song-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .song-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: #00B894;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .song-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .song-card:hover::before {
+            opacity: 1;
+        }
+
+        .song-title {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #2D3436;
+            margin-bottom: 0.5rem;
+        }
+
+        .song-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .song-card:hover .song-actions {
+            opacity: 1;
+        }
+
+        .action-btn {
+            padding: 0.5rem;
+            border: none;
+            border-radius: 6px;
+            background: #f8f9fa;
+            color: #2D3436;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .action-btn:hover {
+            background: #00B894;
+            color: white;
+        }
+
+        /* Modal Styles */
+        .modal-content {
+            border-radius: 12px;
+            border: none;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #2D3436, #636E72);
+            color: white;
+            border-radius: 12px 12px 0 0;
+            padding: 1.5rem;
+        }
+
+        .modal-title {
+            color: #00B894;
+            font-weight: 600;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .modal-footer {
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            padding: 1rem 1.5rem;
+        }
+
+        .control-buttons {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .control-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 6px;
+            background: #f8f9fa;
+            color: #2D3436;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            min-width: 120px;
+            justify-content: center;
+        }
+
+        .control-btn:hover {
+            background: #00B894;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .control-btn i {
+            font-size: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .song-grid {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+            .control-buttons {
+                gap: 0.5rem;
+            }
+            .control-btn {
+                min-width: 100px;
+                padding: 0.4rem 0.75rem;
+                font-size: 0.9rem;
+            }
+        }
     </style>
 </head>
 
@@ -285,20 +435,29 @@
                     </center>
                 </div>
                 <div class="modal-footer">
-                    <!-- <button type="button" class="btn btn-dark" style="position: absolute; left: 5px;"
-                        onclick="listen()"><i class="fa fa-headphones" aria-hidden="true"></i> Listen</button> -->
                     {% if login %}
-                    <button id="plus" type="button" class="btn btn-dark" onclick="sendData2('font+')"
-                        style="position: absolute; left: 55px;"><i class="fa fa-plus" aria-hidden="true"></i></button>
-
-                    <button id="minus" type="button" class="btn btn-dark" onclick="sendData2('font-')"
-                        style="position: absolute; left: 5px;"><i class="fa fa-minus" aria-hidden="true"></i></button>
-                    <button id="send" type="button" class="btn btn-dark" onclick="sendControl()"
-                        style="position: absolute; left: 105px;"><i class="fa fa-send" aria-hidden="true"></i></button>
-                    <button type="button" class="btn btn-primary" onclick="sendData2('white_bg')"><i class="fa fa-image"
-                            aria-hidden="true"></i></button>
-                    <button type="button" class="btn btn-dark" onclick="sendData2('black_bg')"><i class="fa fa-image"
-                            aria-hidden="true"></i></button>
+                    <div class="control-buttons">
+                        <button class="control-btn" onclick="sendData2('font-')">
+                            <i class="fa fa-minus"></i>
+                            <span>Smaller</span>
+                        </button>
+                        <button class="control-btn" onclick="sendData2('font+')">
+                            <i class="fa fa-plus"></i>
+                            <span>Larger</span>
+                        </button>
+                        <button class="control-btn" onclick="sendControl()">
+                            <i class="fa fa-sync"></i>
+                            <span>Sync</span>
+                        </button>
+                        <button class="control-btn" onclick="sendData2('white_bg')">
+                            <i class="fa fa-sun-o"></i>
+                            <span>Light</span>
+                        </button>
+                        <button class="control-btn" onclick="sendData2('black_bg')">
+                            <i class="fa fa-moon-o"></i>
+                            <span>Dark</span>
+                        </button>
+                    </div>
                     {% else %}
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary" onclick="location.href='/'">Home Page</button>
@@ -313,68 +472,27 @@
     <div class="tab-content" id="pills-tabContent">
 
         <div class="tab-pane fade show active" id="all" role="tabpanel" aria-labelledby="all-tab">
-
-            <center>
-                <table class="table table-dark table-hover table-bordered" style="margin-top: -25px;">
-                    <thead class="table-dark">
-                        <tr>
-                            <th style="display: none;">Id</th>
-                            
-                            <th>
-                                <center style="font-size: 20px;color: bisque; font-family:cursive;">Song Title</center>
-                            </th>
+            <div class="container">
+                <div class="song-grid">
+                    {% for row in rows %}
+                    <div class="song-card" data-id="{{ row[0] }}" onclick="viewSong('{{ row[0] }}')">
+                        <div class="song-title">{{ row[1] }}</div>
+                        <div class="song-actions">
                             {% if permission > 1 %}
-                            <th style="width:20%">
-                                <center style="font-size: 20px;color: bisque; font-family:cursive;">Edit Song</center>
-                            </th>
+                            <button class="action-btn" onclick="event.stopPropagation(); editSong('{{ row[0] }}')">
+                                <i class="fa fa-edit"></i>
+                            </button>
                             {% endif %}
                             {% if permission > 2 %}
-                            <th style="width:20%" class="del">
-                                <center style="font-size: 20px;color: bisque; font-family:cursive;">Delete</center>
-                            </th>
+                            <button class="action-btn del" onclick="event.stopPropagation(); deleteSong('{{ row[0] }}')">
+                                <i class="fa fa-trash"></i>
+                            </button>
                             {% endif %}
-                            <th >&nbsp;A-Z&nbsp;</th>
-                            <!-- <th style="display: none;">Alternate Title</th>
-                            <th style="display: none;">Search Title</th>
-                            <th style="display: none;">Search Lyrics</th> -->
-                            <!-- Add more column headings as per your database structure -->
-                        </tr>
-                    </thead>
-                    <tbody class="table-primary" id="songTable">
-                        {% for row in rows %}
-                        <tr data-id="{{ row[0] }}" id="{{ row[0] }}">
-                            
-                            <!-- <td>{{ row[1] }}</td> -->
-                            <td data-bs-toggle="modal" data-bs-target="#songModal">{{ row[1] }}</td>
-                            <td style="display: none;">{{ row[2] }}</td>
-                            {% if permission > 1 %}
-                            <td>
-                                <center><a
-                                    target="_blank"
-                                    class="btn-primary"
-                                    href="/edit_songs/{{row[0]}}"
-                                  >
-                                    &nbsp;&nbsp;&nbsp;<i class="fa fa-edit"></i
-                                    >&nbsp;&nbsp;&nbsp;
-                                  </a></center>
-                            </td>
-                            {% endif %}
-                            {% if permission > 2 %}
-                            <td class="del">
-                                <center><button class="btn-primary del_btn_clk"
-                                        onclick="delete_song('{{row[0]}}')">Delete Song<i
-                                            class="fa fa-trash-o"></i></button></center>
-                            </td>
-                            {% endif %}
-                            <td>&nbsp;&nbsp;</td>
-                            <td style="display: none;">{{ row[3] }}</td>
-                            <td style="display: none;">{{ row[4] }}</td>
-                            <!-- Add more columns as per your database structure -->
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table><br><br>
-            </center>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
         </div>
         <div class="tab-pane fade" id="english" role="tabpanel" aria-labelledby="english-tab">
             <h1>
