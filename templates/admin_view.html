@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Database View</title>
+    <style>
+      table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+      th,
+      td {
+        border: 1px solid black;
+        padding: 8px;
+        text-align: left;
+      }
+      th {
+        background-color: #f2f2f2;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Database View</h1>
+    <h2>Log Details</h2>
+    <table>
+      <tr>
+        <th>ID</th>
+        <th>User</th>
+        <th>Time</th>
+      </tr>
+      {% for row in log_details_data %}
+      <tr>
+        <td>{{ row[0] }}</td>
+        <td>{{ row[1] }}</td>
+        <td>{{ row[2] }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+
+    <h2>Details</h2>
+    <table>
+      <tr>
+        <th>ID</th>
+        <th>User</th>
+        <th>Time</th>
+        <th>Data</th>
+      </tr>
+      {% for row in details_data %}
+      <tr>
+        <td>{{ row[0] }}</td>
+        <td>{{ row[1] }}</td>
+        <td>{{ row[2] }}</td>
+        <td>{{ row[3] | safe}}</td>
+      </tr>
+      {% endfor %}
+    </table>
+
+    <h2>Controls</h2>
+    <table>
+      <tr>
+        <th>ID</th>
+        <th>User</th>
+        <th>Time</th>
+        <th>Data</th>
+      </tr>
+      {% for row in controls_data %}
+      <tr>
+        <td>{{ row[0] }}</td>
+        <td>{{ row[1] }}</td>
+        <td>{{ row[2] }}</td>
+        <td>{{ row[3] | safe }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+  </body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <title>Document</title>
+</head>
+
+<body>
+    <button onclick="full()">Fullscreen</button>
+    <div id="output_outer" style="display: block; width: 100%; height: 80%; padding: 0px;">
+        <div id="output" class="align-items-center justify-content-center" style="display: none;">
+            Praise the Lord!
+        </div>
+    </div>
+    <script>
+        function full() {
+            var elem = document.getElementById("output_outer");
+
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen();
+            }
+            else if (elem.msRequestFullscreen) {
+                elem.msRequestFullscreen();
+            }
+            else if (elem.mozRequestFullscreen) {
+                elem.mozRequestFullscreen();
+            }
+            else if (elem.webkitRequestFullscreen) {
+                elem.webkitRequestFullscreen();
+            }
+
+            elem.style.width = "100%";
+            elem.style.hright= "100%";
+            elem.style.backgroundColor = "white";
+            var output = document.getElementById('output');
+            output.style.display = 'block';
+        }
+    </script>
+</body>
+
+</html>

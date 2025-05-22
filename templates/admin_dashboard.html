@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard</title>
+</head>
+<body>
+    <h1>User Management</h1>
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Password</th>
+            <th>OTP</th>
+            <th>Verified</th>
+            <th>Permission</th>
+            <th>Update Permission</th>
+            <th>Delete Users</th> <!-- New column for Delete action -->
+        </tr>
+        {% for user in users %}
+        <tr>
+            <td>{{ user[0] }}</td>
+            <td>{{ user[1] }}</td>
+            <td>{{ user[2] }}</td>
+            <td>{{ user[3] }}</td>
+            <td>{{ user[4] }}</td>
+            <td>{{ user[5] }}</td>
+            <td>{{ user[6] }}</td>
+            <td><a href="{{ url_for('modify_user', user_id=user[0]) }}">Modify Permission</a></td>
+            <td><a href="{{ url_for('delete_user', user_id=user[0]) }}" onclick="return confirm('Are you sure you want to delete this user?')">Delete</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+    />
+    <style>
+      /* Add custom styles if needed */
+      .card {
+        margin-bottom: 20px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <br />
+    <center>
+      <h1>Welcome {{user_name}}!</h1>
+    </center>
+    <div class="container mt-4">
+      <div class="row mt-4">
+        <div class="col-md-6">
+          <div class="card">
+            <center>
+              <div class="card-body">
+                <h5 class="card-title">All Songs / Home Page</h5>
+                <p class="card-text">Navigate to the All Songs.</p>
+                <a target="_blank" href="/" class="btn btn-primary"
+                  >All Songs</a
+                >
+              </div>
+            </center>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card">
+            <center>
+              <div class="card-body">
+                <h5 class="card-title">Hindi Songs</h5>
+                <p class="card-text">Navigate to the Hindi Songs.</p>
+                <a target="_blank" href="/hindi" class="btn btn-primary"
+                  >Hindi Songs</a
+                >
+              </div>
+            </center>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card">
+            <center>
+              <div class="card-body">
+                <h5 class="card-title">Telugu Songs</h5>
+                <p class="card-text">Navigate to the Telugu Songs.</p>
+                <a target="_blank" href="/telugu" class="btn btn-primary"
+                  >Telugu Songs</a
+                >
+              </div>
+            </center>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="card">
+            <center>
+              <div class="card-body">
+                <h5 class="card-title">Tamil Songs</h5>
+                <p class="card-text">Navigate to the Tamil Songs.</p>
+                <a target="_blank" href="/tamil" class="btn btn-primary"
+                  >Tamil Songs</a
+                >
+              </div>
+            </center>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card">
+            <center>
+              <div class="card-body">
+                <h5 class="card-title">Malayalam Songs</h5>
+                <p class="card-text">Navigate to the Malayalam Songs.</p>
+                <a target="_blank" href="/malayalam" class="btn btn-primary"
+                  >Malayalam Songs</a
+                >
+              </div>
+            </center>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="card">
+            <center>
+              <div class="card-body">
+                <h5 class="card-title">Bible Page</h5>
+                <p class="card-text">Navigate to the Bible Page.</p>
+                <a target="_blank" href="/bible" class="btn btn-primary"
+                  >Bible Page</a
+                >
+              </div>
+            </center>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card">
+            <center>
+              <div class="card-body">
+                <h5 class="card-title">Updates Page</h5>
+                <p class="card-text">Navigate to the Updates Page.</p>
+                <a target="_blank" href="/updates" class="btn btn-primary"
+                  >Updates</a
+                >
+              </div>
+            </center>
+          </div>
+        </div>
+
+        <!-- Add more cards as needed -->
+
+        <div class="col-md-6">
+          <center>
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Controls Page</h5>
+                <p class="card-text">Access controls page.</p>
+                <a
+                  target="_blank"
+                  href="/control/{{user_name}}"
+                  class="btn btn-primary"
+                  >Controls Page</a
+                >
+              </div>
+            </div>
+          </center>
+        </div>
+      </div>
+      <div class="row mt-4">
+        <div class="col">
+          <div class="card">
+            <center>
+              <div class="card-body">
+                <h5 class="card-title">Display Page</h5>
+                <p class="card-text">Go to the display page.</p>
+                <a
+                  target="_blank"
+                  href="/display/{{user_name}}_display"
+                  class="btn btn-primary"
+                  >Display Page</a
+                >
+              </div>
+            </center>
+          </div>
+        </div>
+      </div>
+
+      {% if permission > 0 %}
+      <div class="row mt-4">
+        <div class="col">
+          <div class="card">
+            <center>
+              <div class="card-body">
+                <h5 class="card-title">Add Songs</h5>
+                <p class="card-text">Add new songs to the database.</p>
+                <a target="_blank" href="/add_songs" class="btn btn-primary"
+                  >Add Songs</a
+                >
+              </div>
+            </center>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

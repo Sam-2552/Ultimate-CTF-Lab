@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Add Song Form</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h2>Add Song</h2>
+        <form method="post" action="/add_songs">
+            
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" class="form-control" id="title" name="title" required>
+            </div>
+            <div class="form-group">
+                <label for="alternateTitle">Alternate Title</label>
+                <input type="text" class="form-control" id="alternateTitle" name="alternateTitle"
+                    placeholder="Optional, can put what is easy to search">
+            </div>
+            <div class="form-group">
+                <label for="chord">Chord</label>
+                <input type="text" class="form-control" id="chord" name="chord" placeholder="Optional, [C or G]">
+            </div>
+            <div id="transliterationLyricsField" >
+                <label for="transliterationLyrics">Transliteration Lyrics</label>
+                <textarea class="form-control" id="transliterationLyrics" name="transliterationLyrics"
+                    rows="10" placeholder="Optional || Use for other language songs"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="lyrics">Lyrics</label>
+                <textarea class="form-control" id="lyrics" name="lyrics" rows="10" required></textarea>
+            </div>
+            <div class="form-group" >
+                <label for="youtube_link">Youtube Link</label>
+                <input type="text" class="form-control" id="youtube_link" name="youtube_link" placeholder="Optional || Embed Link here">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <br>
+        </form>
+    </div>
+    <br>
+
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

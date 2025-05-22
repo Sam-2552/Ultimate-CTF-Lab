@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Logs</title>
+    <style>
+      table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+      th,
+      td {
+        border: 1px solid black;
+        padding: 8px;
+        text-align: left;
+      }
+      th {
+        background-color: #f2f2f2;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Admin Logs Viewer</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>User</th>
+          <th>Time</th>
+          <th>Link</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for log in add_logs %}
+        <tr>
+          <td>{{ log[0] }}</td>
+          <td>{{ log[1] }}</td>
+          <td>{{ log[2] }}</td>
+          <td>{{ log[3] }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <h1>Edit Logs</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Edit ID</th>
+          <th>Title</th>
+          <th>Alternate Title</th>
+          <th>Lyrics</th>
+          <th>Transliteration</th>
+          <th>Chord</th>
+          <th>Search Title</th>
+          <th>Search Lyrics</th>
+          <th>YouTube Link</th>
+          <th>Create Date</th>
+          <th>Modified Date</th>
+          <th>Username</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for log in edit_logs %}
+        <tr>
+          <td>{{ log[0] }}</td>
+          <td>{{ log[1] }}</td>
+          <td>{{ log[2] }}</td>
+          <td>{{ log[3] }}</td>
+          <td>{{ log[4] }}</td>
+          <td>{{ log[5] }}</td>
+          <td>{{ log[6] }}</td>
+          <td>{{ log[7] }}</td>
+          <td>{{ log[8] }}</td>
+          <td>{{ log[9] }}</td>
+          <td>{{ log[10] }}</td>
+          <td>{{ log[11] }}</td>
+          {% if log[12] == "&@m_@I" or "samjose" %}
+          <td> <b>Admin:&nbsp;&nbsp;</b>samjose</td>
+          {% else %}
+          <td>{{ log[12] }}</td>
+          {% endif %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <h1>Delete Logs</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Delete ID</th>
+          <th>Title</th>
+          <th>Alternate Title</th>
+          <th>Lyrics</th>
+          <th>Transliteration</th>
+          <th>Chord</th>
+          <th>Search Title</th>
+          <th>Search Lyrics</th>
+          <th>YouTube Link</th>
+          <th>Create Date</th>
+          <th>Modified Date</th>
+          <th>Username</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for log in delete_logs %}
+        <tr>
+          <td>{{ log[0] }}</td>
+          <td>{{ log[1] }}</td>
+          <td>{{ log[2] }}</td>
+          <td>{{ log[3] }}</td>
+          <td>{{ log[4] }}</td>
+          <td>{{ log[5] }}</td>
+          <td>{{ log[6] }}</td>
+          <td>{{ log[7] }}</td>
+          <td>{{ log[8] }}</td>
+          <td>{{ log[9] }}</td>
+          <td>{{ log[10] }}</td>
+          <td>{{ log[11] }}</td>
+          <td>{{ log[12] }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </body>
+</html>
